@@ -61,8 +61,6 @@
 
 #include "ORBextractor.h"
 
-#include <ros/ros.h>
-
 
 using namespace cv;
 using namespace std;

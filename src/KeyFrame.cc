@@ -20,7 +20,6 @@
 
 #include "KeyFrame.h"
 #include "Converter.h"
-#include <ros/ros.h>
 
 namespace ORB_SLAM
 {
