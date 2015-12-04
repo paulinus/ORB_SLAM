@@ -141,6 +141,8 @@ void Map::SaveOpenSfMReconstruction()
     std::ofstream fout("reconstruction.txt");
     fout << keyFrames.size() << "\n\n";
     for (size_t i = 0; i < keyFrames.size(); ++i) {
+        fout << keyFrames[i]->mnId << "\n";
+        fout << keyFrames[i]->mnFrameId << "\n";
         cv::Mat R = keyFrames[i]->GetRotation();
         cv::Mat t = keyFrames[i]->GetTranslation();
         fout << R.at<float>(0,0) << " ";

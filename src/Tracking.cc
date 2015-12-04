@@ -35,12 +35,23 @@
 
 #include<iostream>
 #include<fstream>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 
 using namespace std;
 
 namespace ORB_SLAM
 {
+
+void SaveFrameImage(const Frame &frame)
+{
+    std::cout << "Saving frame " << frame.mnId << "\n";
+    char filename[1000];
+    mkdir("images", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    snprintf(filename, sizeof(filename), "images/frame%06zd.png", frame.mnId);
+    imwrite(filename, frame.im);
+}
 
 
 Tracking::Tracking(ORBVocabulary* pVoc, FramePublisher *pFramePublisher, MapPublisher *pMapPublisher, Map *pMap, string strSettingPath):
@@ -464,6 +475,8 @@ void Tracking::CreateInitialMap(cv::Mat &Rcw, cv::Mat &tcw)
 
     mpLocalMapper->InsertKeyFrame(pKFini);
     mpLocalMapper->InsertKeyFrame(pKFcur);
+    SaveFrameImage(mInitialFrame);
+    SaveFrameImage(mCurrentFrame);
 
     mCurrentFrame.mTcw = pKFcur->GetPose().clone();
     mLastFrame = Frame(mCurrentFrame);
@@ -667,6 +680,7 @@ void Tracking::CreateNewKeyFrame()
     KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
 
     mpLocalMapper->InsertKeyFrame(pKF);
+    SaveFrameImage(mCurrentFrame);
 
     mnLastKeyFrameId = mCurrentFrame.mnId;
     mpLastKeyFrame = pKF;
