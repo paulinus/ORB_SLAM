@@ -135,4 +135,30 @@ void Map::clear()
     mvpReferenceMapPoints.clear();
 }
 
+void Map::SaveOpenSfMReconstruction()
+{
+    std::vector<KeyFrame*> keyFrames = GetAllKeyFrames();
+    std::ofstream fout("reconstruction.txt");
+    fout << keyFrames.size() << "\n\n";
+    for (size_t i = 0; i < keyFrames.size(); ++i) {
+        cv::Mat R = keyFrames[i]->GetRotation();
+        cv::Mat t = keyFrames[i]->GetTranslation();
+        fout << R.at<float>(0,0) << " ";
+        fout << R.at<float>(0,1) << " ";
+        fout << R.at<float>(0,2) << " ";
+        fout << t.at<float>(0,0) << "\n";
+
+        fout << R.at<float>(1,0) << " ";
+        fout << R.at<float>(1,1) << " ";
+        fout << R.at<float>(1,2) << " ";
+        fout << t.at<float>(0,1) << "\n";
+
+        fout << R.at<float>(2,0) << " ";
+        fout << R.at<float>(2,1) << " ";
+        fout << R.at<float>(2,2) << " ";
+        fout << t.at<float>(0,2) << "\n";
+        fout << "\n";
+    }
+}
+
 } //namespace ORB_SLAM

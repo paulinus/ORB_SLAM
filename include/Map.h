@@ -65,6 +65,8 @@ public:
 
     void clear();
 
+    void SaveOpenSfMReconstruction();
+
 protected:
     std::set<MapPoint*> mspMapPoints;
     std::set<KeyFrame*> mspKeyFrames;

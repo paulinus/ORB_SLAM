@@ -85,6 +85,8 @@ void LocalMapping::Run()
             }
 
             mpLoopCloser->InsertKeyFrame(mpCurrentKeyFrame);
+
+            mpMap->SaveOpenSfMReconstruction();
         }
 
         // Safe area to stop
