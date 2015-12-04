@@ -44,6 +44,23 @@ using namespace std;
 namespace ORB_SLAM
 {
 
+void SaveCameraCalibration(const Frame &frame) {
+    // Write camera parameters in this form:
+    //   fx fy cx cy k1 k2 p1 p2
+    //   imageWidth imageHeight
+    std::ofstream fout("calibration.txt");
+    fout << frame.fx << " ";
+    fout << frame.fy << " ";
+    fout << frame.cx << " ";
+    fout << frame.cy << " ";
+    fout << frame.mDistCoef.at<float>(0) << " ";
+    fout << frame.mDistCoef.at<float>(1) << " ";
+    fout << frame.mDistCoef.at<float>(2) << " ";
+    fout << frame.mDistCoef.at<float>(3) << "\n";
+    fout << frame.im.cols << " ";
+    fout << frame.im.rows << "\n";
+}
+
 void SaveFrameImage(const Frame &frame)
 {
     std::cout << "Saving frame " << frame.mnId << "\n";
@@ -477,6 +494,7 @@ void Tracking::CreateInitialMap(cv::Mat &Rcw, cv::Mat &tcw)
     mpLocalMapper->InsertKeyFrame(pKFcur);
     SaveFrameImage(mInitialFrame);
     SaveFrameImage(mCurrentFrame);
+    SaveCameraCalibration(mInitialFrame);
 
     mCurrentFrame.mTcw = pKFcur->GetPose().clone();
     mLastFrame = Frame(mCurrentFrame);
